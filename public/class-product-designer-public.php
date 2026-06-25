@@ -40,6 +40,7 @@ class Product_Designer_Public {
     'snap',
     'zoom-grid',
     'align',
+    'shortcuts',
     'layers',
     'properties',
     'toolbar',
