@@ -215,3 +215,15 @@ gap:8px;
 }
 
 }
+.pdp-view-switcher {
+  display: inline-flex;
+  gap: 6px;
+}
+
+.pdp-view-switcher button {
+  background: #6b7280;
+}
+
+.pdp-view-switcher button.active {
+  background: #2563eb;
+}

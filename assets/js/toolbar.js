@@ -7,7 +7,29 @@ const PDPToolbar = {
     document.getElementById("pdp-add-text")?.addEventListener("click", function () {
       PDPText.add(canvas);
     });
+document.getElementById("pdp-align-left")?.addEventListener("click", function () {
+  PDPAlign.align(canvas, "left");
+});
 
+document.getElementById("pdp-align-center")?.addEventListener("click", function () {
+  PDPAlign.align(canvas, "center");
+});
+
+document.getElementById("pdp-align-right")?.addEventListener("click", function () {
+  PDPAlign.align(canvas, "right");
+});
+
+document.getElementById("pdp-align-top")?.addEventListener("click", function () {
+  PDPAlign.align(canvas, "top");
+});
+
+document.getElementById("pdp-align-middle")?.addEventListener("click", function () {
+  PDPAlign.align(canvas, "middle");
+});
+
+document.getElementById("pdp-align-bottom")?.addEventListener("click", function () {
+  PDPAlign.align(canvas, "bottom");
+});
     document.getElementById("pdp-upload-image")?.addEventListener("change", function (e) {
       PDPImage.upload(canvas, e.target.files[0]);
       e.target.value = "";

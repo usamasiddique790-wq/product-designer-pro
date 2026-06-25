@@ -29,6 +29,7 @@ class Product_Designer_Public {
         $scripts = [
     'utils',
     'product-manager',
+    'view-manager',
     'templates',
     'canvas',
     'text',
@@ -36,6 +37,8 @@ class Product_Designer_Public {
     'export',
     'history',
     'selection',
+    'snap',
+    'align',
     'layers',
     'properties',
     'toolbar',
@@ -79,6 +82,11 @@ class Product_Designer_Public {
     <option value="tshirt">T-Shirt</option>
     <option value="mug">Mug</option>
 </select>
+
+<div class="pdp-view-switcher">
+    <button type="button" id="pdp-view-front" class="active">Front</button>
+    <button type="button" id="pdp-view-back">Back</button>
+</div>
                 <button type="button" id="pdp-add-text">Add Text</button>
 
                 <label class="pdp-upload-btn">
@@ -93,6 +101,12 @@ class Product_Designer_Public {
                 <button type="button" id="pdp-italic">Italic</button>
                 <button type="button" id="pdp-front">Bring Front</button>
                 <button type="button" id="pdp-back">Send Back</button>
+                <button type="button" id="pdp-align-left">Align Left</button>
+<button type="button" id="pdp-align-center">Center</button>
+<button type="button" id="pdp-align-right">Align Right</button>
+<button type="button" id="pdp-align-top">Top</button>
+<button type="button" id="pdp-align-middle">Middle</button>
+<button type="button" id="pdp-align-bottom">Bottom</button>
             </div>
 
             <main class="pdp-editor-main">
