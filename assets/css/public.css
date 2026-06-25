@@ -1,0 +1,120 @@
+.pdp-canvas-area {
+  display: flex;
+  justify-content: center;
+  padding: 18px;
+  background: linear-gradient(135deg, #f8fafc, #e5e7eb);
+  border-radius: 16px;
+  overflow: auto;
+}
+
+#pdp-canvas {
+  border: 1px solid #d1d5db;
+  border-radius: 14px;
+  background: white;
+  box-shadow: 0 12px 28px rgba(15, 23, 42, 0.12);
+}
+
+#pdp-undo,
+#pdp-redo {
+  background: #374151;
+}
+.pdp-workspace {
+  display: grid;
+  grid-template-columns: 1fr 260px;
+  gap: 20px;
+  align-items: start;
+}
+
+.pdp-properties {
+  display: none;
+  padding: 18px;
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+}
+
+.pdp-properties.active {
+  display: block;
+}
+
+.pdp-properties h3 {
+  margin-top: 0;
+  margin-bottom: 14px;
+}
+
+.pdp-properties label {
+  display: block;
+  font-weight: 700;
+  margin-top: 10px;
+  margin-bottom: 5px;
+  font-size: 13px;
+}
+
+.pdp-properties input {
+  width: 100%;
+  padding: 9px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  box-sizing: border-box;
+}
+
+.pdp-properties button {
+  width: 100%;
+  margin-top: 10px;
+  padding: 10px;
+  border: none;
+  border-radius: 8px;
+  background: #111827;
+  color: white;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.pdp-properties button:hover {
+  background: #2563eb;
+}
+
+@media (max-width: 900px) {
+  .pdp-workspace {
+    grid-template-columns: 1fr;
+  }
+}
+.pdp-wrapper {
+  max-width: 1200px;
+}
+
+.pdp-toolbar {
+  position: relative;
+  z-index: 5;
+}
+
+.pdp-workspace {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 280px;
+  gap: 22px;
+  align-items: start;
+}
+
+.pdp-canvas-area {
+  min-width: 0;
+  overflow: auto;
+}
+
+.pdp-properties {
+  position: sticky;
+  top: 20px;
+  z-index: 1;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+@media (max-width: 1100px) {
+  .pdp-workspace {
+    grid-template-columns: 1fr;
+  }
+
+  .pdp-properties {
+    position: static;
+    max-height: none;
+  }
+}
