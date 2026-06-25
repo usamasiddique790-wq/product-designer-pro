@@ -12,7 +12,9 @@ document.addEventListener("DOMContentLoaded", function () {
   PDPViewManager.init(PDPApp.canvas);
   PDPLayers.init(PDPApp.canvas);
   PDPProperties.init(PDPApp.canvas);
+  PDPClipart.init(PDPApp.canvas);
   PDPToolbar.init(PDPApp.canvas);
+  
   PDPShortcuts.init(PDPApp.canvas);
 
   PDPSelection.updateStatusBar();

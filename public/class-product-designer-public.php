@@ -18,6 +18,13 @@ class Product_Designer_Public {
             PDP_VERSION
         );
 
+        wp_enqueue_style(
+            'pdp-google-fonts',
+            'https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Montserrat:wght@400;700&family=Oswald:wght@400;700&family=Playfair+Display:wght@400;700&family=Poppins:wght@400;700&family=Roboto:wght@400;700&display=swap',
+            [],
+            null
+        );
+
         wp_enqueue_script(
             'fabric-js',
             'https://cdnjs.cloudflare.com/ajax/libs/fabric.js/5.3.1/fabric.min.js',
@@ -27,25 +34,27 @@ class Product_Designer_Public {
         );
 
         $scripts = [
-    'utils',
-    'product-manager',
-    'view-manager',
-    'templates',
-    'canvas',
-    'text',
-    'image',
-    'export',
-    'history',
-    'selection',
-    'snap',
-    'zoom-grid',
-    'align',
-    'shortcuts',
-    'layers',
-    'properties',
-    'toolbar',
-    'app',
-];
+            'utils',
+            'product-manager',
+            'view-manager',
+            'templates',
+            'canvas',
+            'text',
+            'image',
+            'clipart',
+            'export',
+            'history',
+            'selection',
+            'snap',
+            'zoom-grid',
+            'align',
+            'shortcuts',
+            'layers',
+            'properties',
+            'toolbar',
+            'app',
+        ];
+
         $deps = ['fabric-js'];
 
         foreach ($scripts as $script) {
@@ -81,20 +90,31 @@ class Product_Designer_Public {
 
             <div class="pdp-editor-toolbar">
                 <select id="pdp-product-select">
-    <option value="tshirt">T-Shirt</option>
-    <option value="mug">Mug</option>
-</select>
+                    <option value="tshirt">T-Shirt</option>
+                    <option value="mug">Mug</option>
+                </select>
 
-<div class="pdp-view-switcher">
-    <button type="button" id="pdp-view-front" class="active">Front</button>
-    <button type="button" id="pdp-view-back">Back</button>
-</div>
+                <div class="pdp-view-switcher">
+                    <button type="button" id="pdp-view-front" class="active">Front</button>
+                    <button type="button" id="pdp-view-back">Back</button>
+                </div>
+
                 <button type="button" id="pdp-add-text">Add Text</button>
 
                 <label class="pdp-upload-btn">
                     Upload Image
                     <input type="file" id="pdp-upload-image" accept="image/*">
                 </label>
+
+                <select id="pdp-font-family">
+                    <option value="Arial">Arial</option>
+                    <option value="Roboto">Roboto</option>
+                    <option value="Poppins">Poppins</option>
+                    <option value="Montserrat">Montserrat</option>
+                    <option value="Oswald">Oswald</option>
+                    <option value="Lato">Lato</option>
+                    <option value="Playfair Display">Playfair Display</option>
+                </select>
 
                 <input type="color" id="pdp-text-color" value="#000000">
                 <input type="number" id="pdp-font-size" value="36" min="10" max="200">
@@ -103,16 +123,18 @@ class Product_Designer_Public {
                 <button type="button" id="pdp-italic">Italic</button>
                 <button type="button" id="pdp-front">Bring Front</button>
                 <button type="button" id="pdp-back">Send Back</button>
+
                 <button type="button" id="pdp-align-left">Align Left</button>
-<button type="button" id="pdp-align-center">Center</button>
-<button type="button" id="pdp-align-right">Align Right</button>
-<button type="button" id="pdp-align-top">Top</button>
-<button type="button" id="pdp-align-middle">Middle</button>
-<button type="button" id="pdp-align-bottom">Bottom</button>
-<button type="button" id="pdp-zoom-in">Zoom +</button>
-<button type="button" id="pdp-zoom-out">Zoom -</button>
-<button type="button" id="pdp-zoom-reset">100%</button>
-<button type="button" id="pdp-toggle-grid">Grid</button>
+                <button type="button" id="pdp-align-center">Center</button>
+                <button type="button" id="pdp-align-right">Align Right</button>
+                <button type="button" id="pdp-align-top">Top</button>
+                <button type="button" id="pdp-align-middle">Middle</button>
+                <button type="button" id="pdp-align-bottom">Bottom</button>
+
+                <button type="button" id="pdp-zoom-in">Zoom +</button>
+                <button type="button" id="pdp-zoom-out">Zoom -</button>
+                <button type="button" id="pdp-zoom-reset">100%</button>
+                <button type="button" id="pdp-toggle-grid">Grid</button>
             </div>
 
             <main class="pdp-editor-main">
@@ -124,6 +146,20 @@ class Product_Designer_Public {
                     <div id="pdp-layers-list" class="pdp-layers-list">
                         <p class="pdp-muted">No layers yet</p>
                     </div>
+
+                    <hr>
+
+                    <div class="pdp-panel-header">
+                        <h3>Clipart</h3>
+                    </div>
+
+                    <input
+                        type="text"
+                        id="pdp-clipart-search"
+                        placeholder="Search clipart..."
+                    >
+
+                    <div id="pdp-clipart-list" class="pdp-clipart-list"></div>
                 </aside>
 
                 <section class="pdp-canvas-stage">
@@ -155,12 +191,17 @@ class Product_Designer_Public {
                     <label>Opacity</label>
                     <input type="range" id="pdp-prop-opacity" min="0" max="1" step="0.1">
 
-                    <div class="pdp-text-only">
+                    <div class="pdp-text-only" style="display:none;">
                         <label>Font Size</label>
                         <input type="number" id="pdp-prop-font-size">
 
                         <label>Text Color</label>
                         <input type="color" id="pdp-prop-color">
+                    </div>
+
+                    <div class="pdp-shape-only" style="display:none;">
+                        <label>Clipart Color</label>
+                        <input type="color" id="pdp-prop-shape-color" value="#2563eb">
                     </div>
 
                     <button type="button" id="pdp-prop-duplicate">Duplicate</button>

@@ -29,7 +29,9 @@ document.getElementById("pdp-zoom-out")?.addEventListener("click", function () {
 document.getElementById("pdp-zoom-reset")?.addEventListener("click", function () {
   PDPZoomGrid.resetZoom();
 });
-
+document.getElementById("pdp-font-family")?.addEventListener("change", function () {
+  PDPText.setFontFamily(canvas, this.value);
+});
 document.getElementById("pdp-toggle-grid")?.addEventListener("click", function () {
   PDPZoomGrid.toggleGrid();
 });

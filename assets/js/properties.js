@@ -2,11 +2,13 @@ const PDPProperties = {
   canvas: null,
   panel: null,
   textOnly: null,
+  shapeOnly: null,
 
   init(canvas) {
     this.canvas = canvas;
     this.panel = document.querySelector(".pdp-properties");
     this.textOnly = document.querySelector(".pdp-text-only");
+    this.shapeOnly = document.querySelector(".pdp-shape-only");
 
     this.fields = {
       left: document.getElementById("pdp-prop-left"),
@@ -17,6 +19,7 @@ const PDPProperties = {
       opacity: document.getElementById("pdp-prop-opacity"),
       fontSize: document.getElementById("pdp-prop-font-size"),
       color: document.getElementById("pdp-prop-color"),
+      shapeColor: document.getElementById("pdp-prop-shape-color"),
     };
 
     this.duplicateBtn = document.getElementById("pdp-prop-duplicate");
@@ -35,6 +38,19 @@ const PDPProperties = {
 
   active() {
     return PDPSelection.getActive();
+  },
+
+  isShape(obj) {
+    return ["group", "path", "circle", "rect", "polygon"].includes(obj.type);
+  },
+
+  getObjectFill(obj) {
+    if (obj.type === "group" && obj.getObjects) {
+      const child = obj.getObjects().find((item) => item.fill);
+      return child?.fill || "#2563eb";
+    }
+
+    return obj.fill || "#2563eb";
   },
 
   update() {
@@ -62,6 +78,15 @@ const PDPProperties = {
       this.fields.color.value = obj.fill || "#000000";
     } else {
       this.textOnly.style.display = "none";
+    }
+
+    if (this.isShape(obj)) {
+      if (this.shapeOnly) this.shapeOnly.style.display = "block";
+      if (this.fields.shapeColor) {
+        this.fields.shapeColor.value = this.getObjectFill(obj);
+      }
+    } else {
+      if (this.shapeOnly) this.shapeOnly.style.display = "none";
     }
 
     this.lockBtn.textContent = obj.lockMovementX ? "Unlock" : "Lock";
@@ -162,6 +187,27 @@ const PDPProperties = {
       PDPHistory.saveState();
     });
 
+    this.fields.shapeColor?.addEventListener("input", () => {
+      const obj = this.active();
+      if (!obj || !this.isShape(obj)) return;
+
+      const color = this.fields.shapeColor.value;
+
+      if (obj.type === "group" && obj.getObjects) {
+        obj.getObjects().forEach((child) => {
+          if (child.set && child.fill) {
+            child.set("fill", color);
+          }
+        });
+      } else {
+        obj.set("fill", color);
+      }
+
+      this.canvas.renderAll();
+      PDPSelection.setActive(obj);
+      PDPHistory.saveState();
+    });
+
     this.duplicateBtn?.addEventListener("click", () => {
       const obj = this.active();
       if (!obj) return;
@@ -177,6 +223,7 @@ const PDPProperties = {
         PDPSelection.setActive(clone);
         this.canvas.renderAll();
         PDPHistory.saveState();
+        PDPLayers.render();
       });
     });
 

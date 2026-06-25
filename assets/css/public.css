@@ -227,3 +227,43 @@ gap:8px;
 .pdp-view-switcher button.active {
   background: #2563eb;
 }
+#pdp-clipart-search {
+  width: 100%;
+  padding: 9px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  margin-bottom: 12px;
+  box-sizing: border-box;
+}
+
+.pdp-clipart-list {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.pdp-clipart-item {
+  border: 1px solid #e5e7eb;
+  background: #fff;
+  border-radius: 10px;
+  padding: 10px;
+  cursor: pointer;
+  text-align: center;
+}
+
+.pdp-clipart-item:hover {
+  border-color: #2563eb;
+  background: #eff6ff;
+}
+
+.pdp-clipart-preview svg {
+  width: 42px;
+  height: 42px;
+}
+
+.pdp-clipart-item span {
+  display: block;
+  margin-top: 6px;
+  font-size: 12px;
+  font-weight: 700;
+}
