@@ -1,31 +1,35 @@
 const PDPCanvas = {
-  designArea: {
-    left: 225,
-    top: 170,
-    width: 250,
-    height: 330,
-  },
+  designArea: null,
 
   init() {
+    const product = PDPProductManager.getCurrent();
+
+    this.designArea = product.designArea;
+
     const canvas = new fabric.Canvas("pdp-canvas", {
       backgroundColor: "#ffffff",
       preserveObjectStacking: true,
     });
 
-    this.buildTemplate(canvas);
+    canvas.setWidth(product.canvas.width);
+    canvas.setHeight(product.canvas.height);
+
+    PDPTemplates.addProductTemplate(canvas, product);
     this.bindBoundaries(canvas);
 
     return canvas;
   },
 
   buildTemplate(canvas) {
+    const product = PDPProductManager.getCurrent();
+
     const oldTemplateObjects = canvas
       .getObjects()
       .filter((obj) => obj.excludeFromExport === true);
 
     oldTemplateObjects.forEach((obj) => canvas.remove(obj));
 
-    PDPTemplates.addTshirt(canvas, this.designArea);
+    PDPTemplates.addProductTemplate(canvas, product);
     canvas.renderAll();
   },
 

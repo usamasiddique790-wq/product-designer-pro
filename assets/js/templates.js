@@ -1,12 +1,21 @@
 const PDPTemplates = {
+  addProductTemplate(canvas, product) {
+    if (product.template === "mug") {
+      this.addMug(canvas, product.designArea);
+      return;
+    }
+
+    this.addTshirt(canvas, product.designArea);
+  },
+
   addTshirt(canvas, designArea) {
     const tshirt = new fabric.Group(
       [
         new fabric.Rect({
-          left: 170,
+          left: 140,
           top: 70,
-          width: 360,
-          height: 520,
+          width: 340,
+          height: 500,
           rx: 40,
           ry: 40,
           fill: "#f8fafc",
@@ -16,10 +25,10 @@ const PDPTemplates = {
 
         new fabric.Polygon(
           [
-            { x: 170, y: 110 },
-            { x: 80, y: 210 },
-            { x: 150, y: 280 },
-            { x: 210, y: 180 },
+            { x: 140, y: 110 },
+            { x: 50, y: 210 },
+            { x: 120, y: 280 },
+            { x: 185, y: 180 },
           ],
           {
             fill: "#f8fafc",
@@ -30,10 +39,10 @@ const PDPTemplates = {
 
         new fabric.Polygon(
           [
-            { x: 530, y: 110 },
-            { x: 620, y: 210 },
-            { x: 550, y: 280 },
-            { x: 490, y: 180 },
+            { x: 480, y: 110 },
+            { x: 570, y: 210 },
+            { x: 500, y: 280 },
+            { x: 435, y: 180 },
           ],
           {
             fill: "#f8fafc",
@@ -43,7 +52,7 @@ const PDPTemplates = {
         ),
 
         new fabric.Circle({
-          left: 295,
+          left: 250,
           top: 70,
           radius: 55,
           fill: "#ffffff",
@@ -61,6 +70,47 @@ const PDPTemplates = {
     canvas.add(tshirt);
     canvas.sendToBack(tshirt);
 
+    this.addDesignArea(canvas, designArea);
+  },
+
+  addMug(canvas, designArea) {
+    const mug = new fabric.Group(
+      [
+        new fabric.Rect({
+          left: 130,
+          top: 170,
+          width: 330,
+          height: 260,
+          rx: 35,
+          ry: 35,
+          fill: "#ffffff",
+          stroke: "#cbd5e1",
+          strokeWidth: 3,
+        }),
+
+        new fabric.Circle({
+          left: 420,
+          top: 230,
+          radius: 70,
+          fill: "transparent",
+          stroke: "#cbd5e1",
+          strokeWidth: 18,
+        }),
+      ],
+      {
+        selectable: false,
+        evented: false,
+        excludeFromExport: true,
+      }
+    );
+
+    canvas.add(mug);
+    canvas.sendToBack(mug);
+
+    this.addDesignArea(canvas, designArea);
+  },
+
+  addDesignArea(canvas, designArea) {
     const printArea = new fabric.Rect({
       left: designArea.left,
       top: designArea.top,

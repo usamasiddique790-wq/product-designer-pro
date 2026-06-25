@@ -1,5 +1,9 @@
 const PDPToolbar = {
   init(canvas) {
+
+    document.getElementById("pdp-product-select")?.addEventListener("change", function () {
+  PDPProductManager.setProduct(this.value, canvas);
+});
     document.getElementById("pdp-add-text")?.addEventListener("click", function () {
       PDPText.add(canvas);
     });

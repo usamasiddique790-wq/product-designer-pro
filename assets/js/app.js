@@ -6,6 +6,10 @@ document.addEventListener("DOMContentLoaded", function () {
   PDPApp.canvas = PDPCanvas.init();
 
   PDPHistory.init(PDPApp.canvas);
+  PDPSelection.init(PDPApp.canvas);
+  PDPLayers.init(PDPApp.canvas);
   PDPProperties.init(PDPApp.canvas);
   PDPToolbar.init(PDPApp.canvas);
+
+  PDPSelection.updateStatusBar();
 });

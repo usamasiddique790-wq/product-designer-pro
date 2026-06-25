@@ -27,20 +27,20 @@ class Product_Designer_Public {
         );
 
         $scripts = [
-            'utils',
+    'utils',
+    'product-manager',
     'templates',
     'canvas',
     'text',
     'image',
     'export',
     'history',
+    'selection',
     'layers',
     'properties',
     'toolbar',
     'app',
-
-        ];
-
+];
         $deps = ['fabric-js'];
 
         foreach ($scripts as $script) {
@@ -60,71 +60,104 @@ class Product_Designer_Public {
         ob_start();
         ?>
 
-        <div class="pdp-wrapper">
-    <h2>Product Designer Pro</h2>
+        <div class="pdp-editor">
+            <header class="pdp-editor-topbar">
+                <div>
+                    <h2>Product Designer Pro</h2>
+                    <p>Professional product customization editor</p>
+                </div>
 
-    <div class="pdp-toolbar">
-        <button type="button" id="pdp-add-text">Add Text</button>
+                <div class="pdp-top-actions">
+                    <button type="button" id="pdp-undo">Undo</button>
+                    <button type="button" id="pdp-redo">Redo</button>
+                    <button type="button" id="pdp-export">Export</button>
+                </div>
+            </header>
 
-        <label class="pdp-upload-btn">
-            Upload Image
-            <input type="file" id="pdp-upload-image" accept="image/*">
-        </label>
+            <div class="pdp-editor-toolbar">
+                <select id="pdp-product-select">
+    <option value="tshirt">T-Shirt</option>
+    <option value="mug">Mug</option>
+</select>
+                <button type="button" id="pdp-add-text">Add Text</button>
 
-        <input type="color" id="pdp-text-color" value="#000000">
-        <input type="number" id="pdp-font-size" value="36" min="10" max="200">
+                <label class="pdp-upload-btn">
+                    Upload Image
+                    <input type="file" id="pdp-upload-image" accept="image/*">
+                </label>
 
-        <button type="button" id="pdp-bold">Bold</button>
-        <button type="button" id="pdp-italic">Italic</button>
-        <button type="button" id="pdp-front">Bring Front</button>
-        <button type="button" id="pdp-back">Send Back</button>
-        <button type="button" id="pdp-undo">Undo</button>
-        <button type="button" id="pdp-redo">Redo</button>
-        <button type="button" id="pdp-export">Export</button>
-    </div>
+                <input type="color" id="pdp-text-color" value="#000000">
+                <input type="number" id="pdp-font-size" value="36" min="10" max="200">
 
-    <div class="pdp-workspace">
-        <div class="pdp-canvas-area">
-            <canvas id="pdp-canvas" width="620" height="600"></canvas>
-        </div>
-
-        <aside class="pdp-properties">
-            <h3>Properties</h3>
-
-            <label>X</label>
-            <input type="number" id="pdp-prop-left">
-
-            <label>Y</label>
-            <input type="number" id="pdp-prop-top">
-
-            <label>Width</label>
-            <input type="number" id="pdp-prop-width">
-
-            <label>Height</label>
-            <input type="number" id="pdp-prop-height">
-
-            <label>Rotation</label>
-            <input type="number" id="pdp-prop-angle">
-
-            <label>Opacity</label>
-            <input type="range" id="pdp-prop-opacity" min="0" max="1" step="0.1">
-
-            <div class="pdp-text-only">
-                <label>Font Size</label>
-                <input type="number" id="pdp-prop-font-size">
-
-                <label>Text Color</label>
-                <input type="color" id="pdp-prop-color">
+                <button type="button" id="pdp-bold">Bold</button>
+                <button type="button" id="pdp-italic">Italic</button>
+                <button type="button" id="pdp-front">Bring Front</button>
+                <button type="button" id="pdp-back">Send Back</button>
             </div>
 
-            <button type="button" id="pdp-prop-duplicate">Duplicate</button>
-            <button type="button" id="pdp-prop-lock">Lock</button>
-            <button type="button" id="pdp-delete">Delete</button>
-        </aside>
-    </div>
+            <main class="pdp-editor-main">
+                <aside class="pdp-panel pdp-layers-panel">
+                    <div class="pdp-panel-header">
+                        <h3>Layers</h3>
+                    </div>
 
-    <textarea id="pdp-output" placeholder="Exported JSON / PNG will appear here"></textarea>
-</div>
+                    <div id="pdp-layers-list" class="pdp-layers-list">
+                        <p class="pdp-muted">No layers yet</p>
+                    </div>
+                </aside>
+
+                <section class="pdp-canvas-stage">
+                    <div class="pdp-canvas-area">
+                        <canvas id="pdp-canvas" width="620" height="600"></canvas>
+                    </div>
+                </section>
+
+                <aside class="pdp-panel pdp-properties">
+                    <div class="pdp-panel-header">
+                        <h3>Properties</h3>
+                    </div>
+
+                    <label>X</label>
+                    <input type="number" id="pdp-prop-left">
+
+                    <label>Y</label>
+                    <input type="number" id="pdp-prop-top">
+
+                    <label>Width</label>
+                    <input type="number" id="pdp-prop-width">
+
+                    <label>Height</label>
+                    <input type="number" id="pdp-prop-height">
+
+                    <label>Rotation</label>
+                    <input type="number" id="pdp-prop-angle">
+
+                    <label>Opacity</label>
+                    <input type="range" id="pdp-prop-opacity" min="0" max="1" step="0.1">
+
+                    <div class="pdp-text-only">
+                        <label>Font Size</label>
+                        <input type="number" id="pdp-prop-font-size">
+
+                        <label>Text Color</label>
+                        <input type="color" id="pdp-prop-color">
+                    </div>
+
+                    <button type="button" id="pdp-prop-duplicate">Duplicate</button>
+                    <button type="button" id="pdp-prop-lock">Lock</button>
+                    <button type="button" id="pdp-delete">Delete</button>
+                </aside>
+            </main>
+
+            <footer class="pdp-statusbar">
+                <span>Zoom: 100%</span>
+                <span id="pdp-status-objects">Objects: 0</span>
+                <span id="pdp-status-active">Active: None</span>
+            </footer>
+
+            <textarea id="pdp-output" placeholder="Exported JSON / PNG will appear here"></textarea>
+        </div>
+
         <?php
         return ob_get_clean();
     }
