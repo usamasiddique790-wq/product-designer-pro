@@ -18,7 +18,21 @@ document.getElementById("pdp-align-center")?.addEventListener("click", function 
 document.getElementById("pdp-align-right")?.addEventListener("click", function () {
   PDPAlign.align(canvas, "right");
 });
+document.getElementById("pdp-zoom-in")?.addEventListener("click", function () {
+  PDPZoomGrid.zoomIn();
+});
 
+document.getElementById("pdp-zoom-out")?.addEventListener("click", function () {
+  PDPZoomGrid.zoomOut();
+});
+
+document.getElementById("pdp-zoom-reset")?.addEventListener("click", function () {
+  PDPZoomGrid.resetZoom();
+});
+
+document.getElementById("pdp-toggle-grid")?.addEventListener("click", function () {
+  PDPZoomGrid.toggleGrid();
+});
 document.getElementById("pdp-align-top")?.addEventListener("click", function () {
   PDPAlign.align(canvas, "top");
 });

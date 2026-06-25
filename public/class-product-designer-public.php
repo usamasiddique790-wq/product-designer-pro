@@ -38,6 +38,7 @@ class Product_Designer_Public {
     'history',
     'selection',
     'snap',
+    'zoom-grid',
     'align',
     'layers',
     'properties',
@@ -107,6 +108,10 @@ class Product_Designer_Public {
 <button type="button" id="pdp-align-top">Top</button>
 <button type="button" id="pdp-align-middle">Middle</button>
 <button type="button" id="pdp-align-bottom">Bottom</button>
+<button type="button" id="pdp-zoom-in">Zoom +</button>
+<button type="button" id="pdp-zoom-out">Zoom -</button>
+<button type="button" id="pdp-zoom-reset">100%</button>
+<button type="button" id="pdp-toggle-grid">Grid</button>
             </div>
 
             <main class="pdp-editor-main">

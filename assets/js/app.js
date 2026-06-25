@@ -8,6 +8,7 @@ document.addEventListener("DOMContentLoaded", function () {
   PDPHistory.init(PDPApp.canvas);
   PDPSelection.init(PDPApp.canvas);
   PDPSnap.init(PDPApp.canvas);
+  PDPZoomGrid.init(PDPApp.canvas);
   PDPViewManager.init(PDPApp.canvas);
   PDPLayers.init(PDPApp.canvas);
   PDPProperties.init(PDPApp.canvas);
