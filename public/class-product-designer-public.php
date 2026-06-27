@@ -1,24 +1,47 @@
 <?php
+/**
+ * Public editor class.
+ *
+ * @package ProductDesignerPro
+ */
+
+// phpcs:disable WordPress.Security.EscapeOutput.OutputNotEscaped
+// phpcs:disable WordPress.NamingConventions.ValidHookName.UseUnderscores
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+/**
+ * Public Product Designer class.
+ */
 class Product_Designer_Public {
-	public function __construct() {
-		if ( ! function_exists( 'add_action' ) || ! function_exists( 'add_shortcode' ) ) {
-			return;
-		}
 
-		add_action( 'wp_enqueue_scripts', array( $this, 'assets' ) );
-		add_shortcode( 'product_designer', array( $this, 'designer_shortcode' ) );
+	/**
+	 * Constructor.
+	 */
+	public function __construct() {
+		// Only hook into WordPress if functions are available (prevents static analyzers/errors
+		// when this file is parsed outside of a WP runtime).
+		if ( function_exists( 'add_action' ) ) {
+			add_action( 'wp_enqueue_scripts', array( $this, 'assets' ) );
+		}
+		if ( function_exists( 'add_shortcode' ) ) {
+			add_shortcode( 'product_designer', array( $this, 'designer_shortcode' ) );
+		}
 	}
 
+	/**
+	 * Enqueue public assets.
+	 *
+	 * @return void
+	 */
 	public function assets() {
+		// Bail if WP functions are not available (prevents static analyzers/errors
+		// when this file is parsed outside of a WP runtime).
 		if ( ! function_exists( 'wp_enqueue_style' ) || ! function_exists( 'wp_enqueue_script' ) ) {
 			return;
 		}
-
 		wp_enqueue_style(
 			'pdp-public-style',
 			PDP_URL . 'assets/css/public.css',
@@ -30,7 +53,7 @@ class Product_Designer_Public {
 			'pdp-google-fonts',
 			'https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Montserrat:wght@400;700&family=Oswald:wght@400;700&family=Playfair+Display:wght@400;700&family=Poppins:wght@400;700&family=Roboto:wght@400;700&display=swap',
 			array(),
-			null
+			PDP_VERSION
 		);
 
 		wp_enqueue_script(
@@ -43,6 +66,7 @@ class Product_Designer_Public {
 
 		$scripts = array(
 			'utils',
+			'product-context',
 			'product-manager',
 			'view-manager',
 			'templates',
@@ -78,7 +102,27 @@ class Product_Designer_Public {
 		}
 	}
 
+	/**
+	 * Render designer shortcode.
+	 *
+	 * @return string
+	 */
 	public function designer_shortcode() {
+		$product_id    = isset( $_GET['pdp_product_id'] ) && function_exists( 'absint' ) ? absint( $_GET['pdp_product_id'] ) : 0; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		$product_name  = '';
+		$product_image = '';
+
+		if ( $product_id && function_exists( 'wc_get_product' ) ) {
+			$product = wc_get_product( $product_id );
+
+			if ( $product ) {
+				$product_name  = $product->get_name();
+				$product_image = function_exists( 'wp_get_attachment_image_url' )
+					? wp_get_attachment_image_url( $product->get_image_id(), 'large' )
+					: '';
+			}
+		}
+
 		ob_start();
 		?>
 
@@ -86,7 +130,23 @@ class Product_Designer_Public {
 			<header class="pdp-editor-topbar">
 				<div>
 					<h2>Product Designer Pro</h2>
-					<p>Professional product customization editor</p>
+
+					<?php if ( $product_name ) : ?>
+						<p>
+							<?php
+							if ( function_exists( 'esc_html_e' ) ) {
+								esc_html_e( 'Customizing:', 'product-designer-pro' ); }
+							?>
+							<strong><?php echo function_exists( 'esc_html' ) ? esc_html( $product_name ) : htmlspecialchars( $product_name, ENT_QUOTES, 'UTF-8' ); ?></strong>
+						</p>
+					<?php else : ?>
+						<p>
+						<?php
+						if ( function_exists( 'esc_html_e' ) ) {
+							esc_html_e( 'Professional product customization editor', 'product-designer-pro' ); }
+						?>
+						</p>
+					<?php endif; ?>
 				</div>
 
 				<div class="pdp-top-actions">
@@ -225,6 +285,10 @@ class Product_Designer_Public {
 			</footer>
 
 			<textarea id="pdp-output" placeholder="Exported JSON / PNG will appear here"></textarea>
+
+			<input type="hidden" id="pdp-product-id" value="<?php echo function_exists( 'esc_attr' ) ? esc_attr( $product_id ) : $product_id; ?>">
+			<input type="hidden" id="pdp-product-name" value="<?php echo function_exists( 'esc_attr' ) ? esc_attr( $product_name ) : $product_name; ?>">
+			<input type="hidden" id="pdp-product-image" value="<?php echo function_exists( 'esc_url' ) ? esc_url( $product_image ) : $product_image; ?>">
 		</div>
 
 		<?php

@@ -3,6 +3,7 @@ document.addEventListener("DOMContentLoaded", function () {
   if (typeof fabric === "undefined") return;
 
   window.PDPApp = {};
+  PDPProductContext.init();
   PDPApp.canvas = PDPCanvas.init();
 
   PDPHistory.init(PDPApp.canvas);
