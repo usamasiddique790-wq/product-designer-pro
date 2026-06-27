@@ -7,21 +7,21 @@ const PDPClipart = {
       category: "Shapes",
       svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
         <path fill="#f59e0b" d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 21 12 17.77 5.82 21 7 14.14l-5-4.87 6.91-1.01L12 2z"/>
-      </svg>`
+      </svg>`,
     },
     {
       name: "Heart",
       category: "Shapes",
       svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
         <path fill="#ef4444" d="M12 21s-7-4.35-10-9.5C-.5 7.2 2.4 3 6.6 3c2.1 0 3.7 1.1 5.4 3 1.7-1.9 3.3-3 5.4-3C21.6 3 24.5 7.2 22 11.5 19 16.65 12 21 12 21z"/>
-      </svg>`
+      </svg>`,
     },
     {
       name: "Circle",
       category: "Shapes",
       svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
         <circle cx="12" cy="12" r="10" fill="#2563eb"/>
-      </svg>`
+      </svg>`,
     },
     {
       name: "Smile",
@@ -31,8 +31,8 @@ const PDPClipart = {
         <circle cx="8" cy="10" r="1.5" fill="#111827"/>
         <circle cx="16" cy="10" r="1.5" fill="#111827"/>
         <path d="M8 15c1 2 7 2 8 0" stroke="#111827" stroke-width="2" fill="none" stroke-linecap="round"/>
-      </svg>`
-    }
+      </svg>`,
+    },
   ],
 
   init(canvas) {
@@ -49,8 +49,7 @@ const PDPClipart = {
 
     const items = this.items.filter((item) => {
       return (
-        item.name.toLowerCase().includes(keyword) ||
-        item.category.toLowerCase().includes(keyword)
+        item.name.toLowerCase().includes(keyword) || item.category.toLowerCase().includes(keyword)
       );
     });
 

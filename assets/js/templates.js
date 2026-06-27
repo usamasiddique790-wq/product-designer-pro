@@ -34,7 +34,7 @@ const PDPTemplates = {
             fill: "#f8fafc",
             stroke: "#cbd5e1",
             strokeWidth: 2,
-          }
+          },
         ),
 
         new fabric.Polygon(
@@ -48,7 +48,7 @@ const PDPTemplates = {
             fill: "#f8fafc",
             stroke: "#cbd5e1",
             strokeWidth: 2,
-          }
+          },
         ),
 
         new fabric.Circle({
@@ -64,7 +64,7 @@ const PDPTemplates = {
         selectable: false,
         evented: false,
         excludeFromExport: true,
-      }
+      },
     );
 
     canvas.add(tshirt);
@@ -101,7 +101,7 @@ const PDPTemplates = {
         selectable: false,
         evented: false,
         excludeFromExport: true,
-      }
+      },
     );
 
     canvas.add(mug);

@@ -1,225 +1,233 @@
 <?php
 
-if (!defined('ABSPATH')) {
-    exit;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
 }
 
 class Product_Designer_Public {
-    public function __construct() {
-        add_action('wp_enqueue_scripts', [$this, 'assets']);
-        add_shortcode('product_designer', [$this, 'designer_shortcode']);
-    }
+	public function __construct() {
+		if ( ! function_exists( 'add_action' ) || ! function_exists( 'add_shortcode' ) ) {
+			return;
+		}
 
-    public function assets() {
-        wp_enqueue_style(
-            'pdp-public-style',
-            PDP_URL . 'assets/css/public.css',
-            [],
-            PDP_VERSION
-        );
+		add_action( 'wp_enqueue_scripts', array( $this, 'assets' ) );
+		add_shortcode( 'product_designer', array( $this, 'designer_shortcode' ) );
+	}
 
-        wp_enqueue_style(
-            'pdp-google-fonts',
-            'https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Montserrat:wght@400;700&family=Oswald:wght@400;700&family=Playfair+Display:wght@400;700&family=Poppins:wght@400;700&family=Roboto:wght@400;700&display=swap',
-            [],
-            null
-        );
+	public function assets() {
+		if ( ! function_exists( 'wp_enqueue_style' ) || ! function_exists( 'wp_enqueue_script' ) ) {
+			return;
+		}
 
-        wp_enqueue_script(
-            'fabric-js',
-            'https://cdnjs.cloudflare.com/ajax/libs/fabric.js/5.3.1/fabric.min.js',
-            [],
-            '5.3.1',
-            true
-        );
+		wp_enqueue_style(
+			'pdp-public-style',
+			PDP_URL . 'assets/css/public.css',
+			array(),
+			PDP_VERSION
+		);
 
-        $scripts = [
-            'utils',
-            'product-manager',
-            'view-manager',
-            'templates',
-            'canvas',
-            'text',
-            'image',
-            'clipart',
-            'export',
-            'history',
-            'selection',
-            'snap',
-            'zoom-grid',
-            'align',
-            'shortcuts',
-            'layers',
-            'properties',
-            'toolbar',
-            'app',
-        ];
+		wp_enqueue_style(
+			'pdp-google-fonts',
+			'https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Montserrat:wght@400;700&family=Oswald:wght@400;700&family=Playfair+Display:wght@400;700&family=Poppins:wght@400;700&family=Roboto:wght@400;700&display=swap',
+			array(),
+			null
+		);
 
-        $deps = ['fabric-js'];
+		wp_enqueue_script(
+			'fabric-js',
+			'https://cdnjs.cloudflare.com/ajax/libs/fabric.js/5.3.1/fabric.min.js',
+			array(),
+			'5.3.1',
+			true
+		);
 
-        foreach ($scripts as $script) {
-            wp_enqueue_script(
-                'pdp-' . $script,
-                PDP_URL . 'assets/js/' . $script . '.js',
-                $deps,
-                PDP_VERSION,
-                true
-            );
+		$scripts = array(
+			'utils',
+			'product-manager',
+			'view-manager',
+			'templates',
+			'canvas',
+			'text',
+			'image',
+			'clipart',
+			'export',
+			'history',
+			'selection',
+			'snap',
+			'zoom-grid',
+			'align',
+			'shortcuts',
+			'layers',
+			'properties',
+			'toolbar',
+			'app',
+		);
 
-            $deps[] = 'pdp-' . $script;
-        }
-    }
+		$deps = array( 'fabric-js' );
 
-    public function designer_shortcode() {
-        ob_start();
-        ?>
+		foreach ( $scripts as $script ) {
+			wp_enqueue_script(
+				'pdp-' . $script,
+				PDP_URL . 'assets/js/' . $script . '.js',
+				$deps,
+				PDP_VERSION,
+				true
+			);
 
-        <div class="pdp-editor">
-            <header class="pdp-editor-topbar">
-                <div>
-                    <h2>Product Designer Pro</h2>
-                    <p>Professional product customization editor</p>
-                </div>
+			$deps[] = 'pdp-' . $script;
+		}
+	}
 
-                <div class="pdp-top-actions">
-                    <button type="button" id="pdp-undo">Undo</button>
-                    <button type="button" id="pdp-redo">Redo</button>
-                    <button type="button" id="pdp-export">Export</button>
-                </div>
-            </header>
+	public function designer_shortcode() {
+		ob_start();
+		?>
 
-            <div class="pdp-editor-toolbar">
-                <select id="pdp-product-select">
-                    <option value="tshirt">T-Shirt</option>
-                    <option value="mug">Mug</option>
-                </select>
+		<div class="pdp-editor">
+			<header class="pdp-editor-topbar">
+				<div>
+					<h2>Product Designer Pro</h2>
+					<p>Professional product customization editor</p>
+				</div>
 
-                <div class="pdp-view-switcher">
-                    <button type="button" id="pdp-view-front" class="active">Front</button>
-                    <button type="button" id="pdp-view-back">Back</button>
-                </div>
+				<div class="pdp-top-actions">
+					<button type="button" id="pdp-undo">Undo</button>
+					<button type="button" id="pdp-redo">Redo</button>
+					<button type="button" id="pdp-export">Export</button>
+				</div>
+			</header>
 
-                <button type="button" id="pdp-add-text">Add Text</button>
+			<div class="pdp-editor-toolbar">
+				<select id="pdp-product-select">
+					<option value="tshirt">T-Shirt</option>
+					<option value="mug">Mug</option>
+				</select>
 
-                <label class="pdp-upload-btn">
-                    Upload Image
-                    <input type="file" id="pdp-upload-image" accept="image/*">
-                </label>
+				<div class="pdp-view-switcher">
+					<button type="button" id="pdp-view-front" class="active">Front</button>
+					<button type="button" id="pdp-view-back">Back</button>
+				</div>
 
-                <select id="pdp-font-family">
-                    <option value="Arial">Arial</option>
-                    <option value="Roboto">Roboto</option>
-                    <option value="Poppins">Poppins</option>
-                    <option value="Montserrat">Montserrat</option>
-                    <option value="Oswald">Oswald</option>
-                    <option value="Lato">Lato</option>
-                    <option value="Playfair Display">Playfair Display</option>
-                </select>
+				<button type="button" id="pdp-add-text">Add Text</button>
 
-                <input type="color" id="pdp-text-color" value="#000000">
-                <input type="number" id="pdp-font-size" value="36" min="10" max="200">
+				<label class="pdp-upload-btn">
+					Upload Image
+					<input type="file" id="pdp-upload-image" accept="image/*">
+				</label>
 
-                <button type="button" id="pdp-bold">Bold</button>
-                <button type="button" id="pdp-italic">Italic</button>
-                <button type="button" id="pdp-front">Bring Front</button>
-                <button type="button" id="pdp-back">Send Back</button>
+				<select id="pdp-font-family">
+					<option value="Arial">Arial</option>
+					<option value="Roboto">Roboto</option>
+					<option value="Poppins">Poppins</option>
+					<option value="Montserrat">Montserrat</option>
+					<option value="Oswald">Oswald</option>
+					<option value="Lato">Lato</option>
+					<option value="Playfair Display">Playfair Display</option>
+				</select>
 
-                <button type="button" id="pdp-align-left">Align Left</button>
-                <button type="button" id="pdp-align-center">Center</button>
-                <button type="button" id="pdp-align-right">Align Right</button>
-                <button type="button" id="pdp-align-top">Top</button>
-                <button type="button" id="pdp-align-middle">Middle</button>
-                <button type="button" id="pdp-align-bottom">Bottom</button>
+				<input type="color" id="pdp-text-color" value="#000000">
+				<input type="number" id="pdp-font-size" value="36" min="10" max="200">
 
-                <button type="button" id="pdp-zoom-in">Zoom +</button>
-                <button type="button" id="pdp-zoom-out">Zoom -</button>
-                <button type="button" id="pdp-zoom-reset">100%</button>
-                <button type="button" id="pdp-toggle-grid">Grid</button>
-            </div>
+				<button type="button" id="pdp-bold">Bold</button>
+				<button type="button" id="pdp-italic">Italic</button>
+				<button type="button" id="pdp-front">Bring Front</button>
+				<button type="button" id="pdp-back">Send Back</button>
 
-            <main class="pdp-editor-main">
-                <aside class="pdp-panel pdp-layers-panel">
-                    <div class="pdp-panel-header">
-                        <h3>Layers</h3>
-                    </div>
+				<button type="button" id="pdp-align-left">Align Left</button>
+				<button type="button" id="pdp-align-center">Center</button>
+				<button type="button" id="pdp-align-right">Align Right</button>
+				<button type="button" id="pdp-align-top">Top</button>
+				<button type="button" id="pdp-align-middle">Middle</button>
+				<button type="button" id="pdp-align-bottom">Bottom</button>
 
-                    <div id="pdp-layers-list" class="pdp-layers-list">
-                        <p class="pdp-muted">No layers yet</p>
-                    </div>
+				<button type="button" id="pdp-zoom-in">Zoom +</button>
+				<button type="button" id="pdp-zoom-out">Zoom -</button>
+				<button type="button" id="pdp-zoom-reset">100%</button>
+				<button type="button" id="pdp-toggle-grid">Grid</button>
+			</div>
 
-                    <hr>
+			<main class="pdp-editor-main">
+				<aside class="pdp-panel pdp-layers-panel">
+					<div class="pdp-panel-header">
+						<h3>Layers</h3>
+					</div>
 
-                    <div class="pdp-panel-header">
-                        <h3>Clipart</h3>
-                    </div>
+					<div id="pdp-layers-list" class="pdp-layers-list">
+						<p class="pdp-muted">No layers yet</p>
+					</div>
 
-                    <input
-                        type="text"
-                        id="pdp-clipart-search"
-                        placeholder="Search clipart..."
-                    >
+					<hr>
 
-                    <div id="pdp-clipart-list" class="pdp-clipart-list"></div>
-                </aside>
+					<div class="pdp-panel-header">
+						<h3>Clipart</h3>
+					</div>
 
-                <section class="pdp-canvas-stage">
-                    <div class="pdp-canvas-area">
-                        <canvas id="pdp-canvas" width="620" height="600"></canvas>
-                    </div>
-                </section>
+					<input
+						type="text"
+						id="pdp-clipart-search"
+						placeholder="Search clipart..."
+					>
 
-                <aside class="pdp-panel pdp-properties">
-                    <div class="pdp-panel-header">
-                        <h3>Properties</h3>
-                    </div>
+					<div id="pdp-clipart-list" class="pdp-clipart-list"></div>
+				</aside>
 
-                    <label>X</label>
-                    <input type="number" id="pdp-prop-left">
+				<section class="pdp-canvas-stage">
+					<div class="pdp-canvas-area">
+						<canvas id="pdp-canvas" width="620" height="600"></canvas>
+					</div>
+				</section>
 
-                    <label>Y</label>
-                    <input type="number" id="pdp-prop-top">
+				<aside class="pdp-panel pdp-properties">
+					<div class="pdp-panel-header">
+						<h3>Properties</h3>
+					</div>
 
-                    <label>Width</label>
-                    <input type="number" id="pdp-prop-width">
+					<label>X</label>
+					<input type="number" id="pdp-prop-left">
 
-                    <label>Height</label>
-                    <input type="number" id="pdp-prop-height">
+					<label>Y</label>
+					<input type="number" id="pdp-prop-top">
 
-                    <label>Rotation</label>
-                    <input type="number" id="pdp-prop-angle">
+					<label>Width</label>
+					<input type="number" id="pdp-prop-width">
 
-                    <label>Opacity</label>
-                    <input type="range" id="pdp-prop-opacity" min="0" max="1" step="0.1">
+					<label>Height</label>
+					<input type="number" id="pdp-prop-height">
 
-                    <div class="pdp-text-only" style="display:none;">
-                        <label>Font Size</label>
-                        <input type="number" id="pdp-prop-font-size">
+					<label>Rotation</label>
+					<input type="number" id="pdp-prop-angle">
 
-                        <label>Text Color</label>
-                        <input type="color" id="pdp-prop-color">
-                    </div>
+					<label>Opacity</label>
+					<input type="range" id="pdp-prop-opacity" min="0" max="1" step="0.1">
 
-                    <div class="pdp-shape-only" style="display:none;">
-                        <label>Clipart Color</label>
-                        <input type="color" id="pdp-prop-shape-color" value="#2563eb">
-                    </div>
+					<div class="pdp-text-only" style="display:none;">
+						<label>Font Size</label>
+						<input type="number" id="pdp-prop-font-size">
 
-                    <button type="button" id="pdp-prop-duplicate">Duplicate</button>
-                    <button type="button" id="pdp-prop-lock">Lock</button>
-                    <button type="button" id="pdp-delete">Delete</button>
-                </aside>
-            </main>
+						<label>Text Color</label>
+						<input type="color" id="pdp-prop-color">
+					</div>
 
-            <footer class="pdp-statusbar">
-                <span>Zoom: 100%</span>
-                <span id="pdp-status-objects">Objects: 0</span>
-                <span id="pdp-status-active">Active: None</span>
-            </footer>
+					<div class="pdp-shape-only" style="display:none;">
+						<label>Clipart Color</label>
+						<input type="color" id="pdp-prop-shape-color" value="#2563eb">
+					</div>
 
-            <textarea id="pdp-output" placeholder="Exported JSON / PNG will appear here"></textarea>
-        </div>
+					<button type="button" id="pdp-prop-duplicate">Duplicate</button>
+					<button type="button" id="pdp-prop-lock">Lock</button>
+					<button type="button" id="pdp-delete">Delete</button>
+				</aside>
+			</main>
 
-        <?php
-        return ob_get_clean();
-    }
+			<footer class="pdp-statusbar">
+				<span>Zoom: 100%</span>
+				<span id="pdp-status-objects">Objects: 0</span>
+				<span id="pdp-status-active">Active: None</span>
+			</footer>
+
+			<textarea id="pdp-output" placeholder="Exported JSON / PNG will appear here"></textarea>
+		</div>
+
+		<?php
+		return ob_get_clean();
+	}
 }

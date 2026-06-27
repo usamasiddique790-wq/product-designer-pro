@@ -73,9 +73,7 @@ const PDPSelection = {
 
     if (!this.canvas) return;
 
-    const userObjects = this.canvas
-      .getObjects()
-      .filter((obj) => obj.excludeFromExport !== true);
+    const userObjects = this.canvas.getObjects().filter((obj) => obj.excludeFromExport !== true);
 
     if (objectsCountEl) {
       objectsCountEl.textContent = `Objects: ${userObjects.length}`;

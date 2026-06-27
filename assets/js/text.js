@@ -1,16 +1,16 @@
 const PDPText = {
   setFontFamily(canvas, family) {
-  const text = PDPUtils.activeText(canvas);
-  if (!text) return;
+    const text = PDPUtils.activeText(canvas);
+    if (!text) return;
 
-  text.set({
-    fontFamily: family,
-  });
+    text.set({
+      fontFamily: family,
+    });
 
-  canvas.renderAll();
-  PDPSelection.setActive(text);
-  PDPHistory.saveState();
-},
+    canvas.renderAll();
+    PDPSelection.setActive(text);
+    PDPHistory.saveState();
+  },
   add(canvas) {
     const area = PDPCanvas.designArea;
 

@@ -33,17 +33,13 @@ const PDPViewManager = {
   },
 
   getUserObjects() {
-    return this.canvas
-      .getObjects()
-      .filter((obj) => obj.excludeFromExport !== true);
+    return this.canvas.getObjects().filter((obj) => obj.excludeFromExport !== true);
   },
 
   saveCurrentView() {
     const userObjects = this.getUserObjects();
 
-    this.views[this.currentView] = JSON.stringify(
-      userObjects.map((obj) => obj.toObject())
-    );
+    this.views[this.currentView] = JSON.stringify(userObjects.map((obj) => obj.toObject()));
   },
 
   clearUserObjects() {

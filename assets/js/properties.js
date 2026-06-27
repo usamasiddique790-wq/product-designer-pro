@@ -119,12 +119,7 @@ const PDPProperties = {
       PDPHistory.saveState();
     };
 
-    [
-      this.fields.left,
-      this.fields.top,
-      this.fields.angle,
-      this.fields.opacity,
-    ].forEach((field) => {
+    [this.fields.left, this.fields.top, this.fields.angle, this.fields.opacity].forEach((field) => {
       field?.addEventListener("input", updateBasic);
     });
 

@@ -1,0 +1,15 @@
+parameters:
+    level: 3
+
+    paths:
+        - product-designer-pro.php
+        - includes
+        - public
+
+    excludePaths:
+        - vendor
+        - node_modules
+
+    ignoreErrors:
+        - '#Function woocommerce_wp_checkbox not found#'
+        - '#Function is_product not found#'

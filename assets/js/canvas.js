@@ -23,9 +23,7 @@ const PDPCanvas = {
   buildTemplate(canvas) {
     const product = PDPProductManager.getCurrent();
 
-    const oldTemplateObjects = canvas
-      .getObjects()
-      .filter((obj) => obj.excludeFromExport === true);
+    const oldTemplateObjects = canvas.getObjects().filter((obj) => obj.excludeFromExport === true);
 
     oldTemplateObjects.forEach((obj) => canvas.remove(obj));
 

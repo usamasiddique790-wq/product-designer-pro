@@ -39,9 +39,9 @@ const PDPProductManager = {
 
   setProduct(key, canvas) {
     if (!this.products[key]) return;
-if (typeof PDPViewManager !== "undefined") {
-  PDPViewManager.reset();
-}
+    if (typeof PDPViewManager !== "undefined") {
+      PDPViewManager.reset();
+    }
     this.current = key;
 
     const product = this.getCurrent();

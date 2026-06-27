@@ -1,0 +1,26 @@
+{
+  "name": "product-designer-pro",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+     "format": "prettier --write \"assets/**/*.{js,css,json}\"",
+  "format:check": "prettier --check \"assets/**/*.{js,css,json}\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/usamasiddique790-wq/product-designer-pro.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/usamasiddique790-wq/product-designer-pro/issues"
+  },
+  "homepage": "https://github.com/usamasiddique790-wq/product-designer-pro#readme",
+  "devDependencies": {
+    "eslint": "^10.6.0",
+    "prettier": "^3.8.5"
+  }
+}
