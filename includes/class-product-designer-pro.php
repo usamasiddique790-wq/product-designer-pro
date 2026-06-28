@@ -25,7 +25,7 @@ class Product_Designer_Pro {
 	private static $instance = null;
 
 	/**
-	 * Get instance.
+	 * Get plugin instance.
 	 *
 	 * @return Product_Designer_Pro
 	 */
@@ -41,24 +41,31 @@ class Product_Designer_Pro {
 	 * Constructor.
 	 */
 	private function __construct() {
+
+		// Frontend.
 		new Product_Designer_Public();
 
+		// WooCommerce integration.
 		if ( class_exists( 'WooCommerce' ) ) {
 			new Product_Designer_WooCommerce();
 		}
 	}
 
 	/**
-	 * Activation hook.
+	 * Plugin activation hook.
 	 *
 	 * @return void
 	 */
-	public static function activate() {}
+	public static function activate() {
+		// Future activation tasks.
+	}
 
 	/**
-	 * Deactivation hook.
+	 * Plugin deactivation hook.
 	 *
 	 * @return void
 	 */
-	public static function deactivate() {}
+	public static function deactivate() {
+		// Future deactivation tasks.
+	}
 }

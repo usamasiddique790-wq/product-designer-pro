@@ -9,7 +9,16 @@ const PDPToolbar = {
     document.getElementById("pdp-align-left")?.addEventListener("click", function () {
       PDPAlign.align(canvas, "left");
     });
+    document.querySelector(".pdp-add-to-cart-form")?.addEventListener("submit", function () {
+      if (typeof PDPExport === "undefined") return;
 
+      const design = PDPExport.exportDesign(canvas);
+      const field = document.getElementById("pdp-design-json");
+
+      if (field) {
+        field.value = JSON.stringify(design);
+      }
+    });
     document.getElementById("pdp-align-center")?.addEventListener("click", function () {
       PDPAlign.align(canvas, "center");
     });

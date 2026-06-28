@@ -33,10 +33,7 @@ const PDPCanvas = {
         const canvasWidth = canvas.getWidth();
         const canvasHeight = canvas.getHeight();
 
-        const scale = Math.min(
-          (canvasWidth * 0.8) / img.width,
-          (canvasHeight * 0.85) / img.height
-        );
+        const scale = Math.min((canvasWidth * 0.8) / img.width, (canvasHeight * 0.85) / img.height);
 
         img.set({
           left: canvasWidth / 2,
@@ -57,16 +54,14 @@ const PDPCanvas = {
       },
       {
         crossOrigin: "anonymous",
-      }
+      },
     );
   },
 
   buildTemplate(canvas) {
     const product = PDPProductManager.getCurrent();
 
-    const oldTemplateObjects = canvas
-      .getObjects()
-      .filter((obj) => obj.excludeFromExport === true);
+    const oldTemplateObjects = canvas.getObjects().filter((obj) => obj.excludeFromExport === true);
 
     oldTemplateObjects.forEach((obj) => canvas.remove(obj));
 

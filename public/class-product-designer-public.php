@@ -290,7 +290,21 @@ class Product_Designer_Public {
 			<input type="hidden" id="pdp-product-name" value="<?php echo function_exists( 'esc_attr' ) ? esc_attr( $product_name ) : $product_name; ?>">
 			<input type="hidden" id="pdp-product-image" value="<?php echo function_exists( 'esc_url' ) ? esc_url( $product_image ) : $product_image; ?>">
 		</div>
-
+		<?php if ( $product_id ) : ?>
+	<form class="pdp-add-to-cart-form" method="post" action="<?php echo function_exists( 'esc_url' ) ? esc_url( wc_get_cart_url() ) : wc_get_cart_url(); ?>">
+		<input type="hidden" name="add-to-cart" value="<?php echo function_exists( 'esc_attr' ) ? esc_attr( $product_id ) : $product_id; ?>">
+		<input type="hidden" name="pdp_design_json" id="pdp-design-json" value="">
+		<button type="submit" id="pdp-add-to-cart" class="button">
+					<?php
+					if ( function_exists( 'esc_html_e' ) ) {
+						esc_html_e( 'Add to Cart with Design', 'product-designer-pro' );
+					} else {
+						echo 'Add to Cart with Design';
+					}
+					?>
+		</button>
+	</form>
+		<?php endif; ?>
 		<?php
 		return ob_get_clean();
 	}
