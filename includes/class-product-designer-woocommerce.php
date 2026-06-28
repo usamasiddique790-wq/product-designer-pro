@@ -31,6 +31,13 @@ class Product_Designer_WooCommerce {
 			10,
 			4
 		);
+
+		add_action(
+			'woocommerce_after_order_itemmeta',
+			array( $this, 'show_design_button' ),
+			10,
+			3
+		);
 	}
 
 	/**
@@ -135,7 +142,37 @@ class Product_Designer_WooCommerce {
 
 		return $item_data;
 	}
+	/**
+	 * Show View Design button in admin order.
+	 *
+	 * @param int   $item_id Order item ID.
+	 * @param mixed $item    Order item.
+	 * @param mixed $product Product.
+	 *
+	 * @return void
+	 */
+	public function show_design_button( $item_id, $item, $product ) {
 
+		unset( $item_id );
+		unset( $product );
+
+		$design_json = $item->get_meta( '_pdp_design_json', true );
+
+		if ( empty( $design_json ) ) {
+			return;
+		}
+
+		?>
+	<p style="margin-top:10px;">
+		<button
+			type="button"
+			class="button pdp-view-design"
+			data-design="<?php echo esc_attr( $design_json ); ?>">
+			<?php esc_html_e( 'View Design', 'product-designer-pro' ); ?>
+		</button>
+	</p>
+		<?php
+	}
 	/**
 	 * Save design JSON to order item.
 	 *

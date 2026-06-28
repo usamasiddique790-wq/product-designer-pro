@@ -63,7 +63,13 @@ class Product_Designer_Public {
 			'5.3.1',
 			true
 		);
-
+		wp_enqueue_script(
+			'pdp-admin-view',
+			PDP_URL . 'assets/js/admin-view.js',
+			array( 'jquery' ),
+			PDP_VERSION,
+			true
+		);
 		$scripts = array(
 			'utils',
 			'product-context',
