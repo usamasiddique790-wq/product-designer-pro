@@ -1,9 +1,13 @@
 const PDPViewManager = {
   currentView: "front",
+
   views: {
     front: "[]",
     back: "[]",
+    frontPreviewPng: "",
+    backPreviewPng: "",
   },
+
   canvas: null,
 
   init(canvas) {
@@ -17,6 +21,8 @@ const PDPViewManager = {
     this.views = {
       front: "[]",
       back: "[]",
+      frontPreviewPng: "",
+      backPreviewPng: "",
     };
 
     this.updateButtons();
@@ -40,6 +46,25 @@ const PDPViewManager = {
     const userObjects = this.getUserObjects();
 
     this.views[this.currentView] = JSON.stringify(userObjects.map((obj) => obj.toObject()));
+
+    this.views[`${this.currentView}PreviewPng`] = this.canvas.toDataURL({
+      format: "png",
+      quality: 1,
+    });
+  },
+
+  saveAllViews() {
+    this.saveCurrentView();
+
+    if (!this.views.frontPreviewPng && this.currentView === "back") {
+      this.views.frontPreviewPng = "";
+    }
+
+    if (!this.views.backPreviewPng && this.currentView === "front") {
+      this.views.backPreviewPng = "";
+    }
+
+    return this.views;
   },
 
   clearUserObjects() {

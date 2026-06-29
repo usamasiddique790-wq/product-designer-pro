@@ -9,8 +9,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-require_once PDP_PATH . 'public/class-product-designer-public.php';
 require_once PDP_PATH . 'includes/class-product-designer-woocommerce.php';
+
+require_once PDP_PATH . 'includes/class-pdp-product.php';
+require_once PDP_PATH . 'includes/class-pdp-cart.php';
+require_once PDP_PATH . 'includes/class-pdp-order.php';
+
+require_once PDP_PATH . 'public/class-product-designer-public.php';
 
 /**
  * Main Product Designer Pro class.

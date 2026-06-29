@@ -24,4 +24,5 @@ parameters:
         - '#Function wp_rand not found#'
         - '#Function wc_get_cart_url not found#'
         - '#Function esc_attr not found#'
-        
+        - '#Function wp_enqueue_script not found#'
+        - '#Function wp_enqueue_style not found#'
