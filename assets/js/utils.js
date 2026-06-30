@@ -1,12 +1,22 @@
 const PDPUtils = {
   activeObject(canvas) {
+    if (typeof PDPSelection !== "undefined" && PDPSelection.getActive()) {
+      return PDPSelection.getActive();
+    }
+
     return canvas.getActiveObject();
   },
 
   activeText(canvas) {
+    if (typeof PDPSelection !== "undefined" && PDPSelection.getActiveText()) {
+      return PDPSelection.getActiveText();
+    }
+
     const obj = canvas.getActiveObject();
+
     if (!obj) return null;
     if (obj.type !== "i-text") return null;
+
     return obj;
   },
 

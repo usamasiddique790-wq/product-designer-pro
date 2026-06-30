@@ -40,7 +40,7 @@ document.addEventListener("DOMContentLoaded", function () {
           fill: "#f8fafc",
           stroke: "#cbd5e1",
           strokeWidth: 2,
-        }
+        },
       ),
 
       new fabric.Polygon(
@@ -54,7 +54,7 @@ document.addEventListener("DOMContentLoaded", function () {
           fill: "#f8fafc",
           stroke: "#cbd5e1",
           strokeWidth: 2,
-        }
+        },
       ),
 
       new fabric.Circle({
@@ -70,7 +70,7 @@ document.addEventListener("DOMContentLoaded", function () {
       selectable: false,
       evented: false,
       excludeFromExport: true,
-    }
+    },
   );
 
   canvas.add(tshirt);
@@ -127,15 +127,15 @@ document.addEventListener("DOMContentLoaded", function () {
   const deleteBtn = document.getElementById("pdp-delete");
   const exportBtn = document.getElementById("pdp-export");
   const colorPicker = document.getElementById("pdp-text-color");
-const fontSize = document.getElementById("pdp-font-size");
+  const fontSize = document.getElementById("pdp-font-size");
 
-const boldBtn = document.getElementById("pdp-bold");
-const italicBtn = document.getElementById("pdp-italic");
+  const boldBtn = document.getElementById("pdp-bold");
+  const italicBtn = document.getElementById("pdp-italic");
 
-const frontBtn = document.getElementById("pdp-front");
-const backBtn = document.getElementById("pdp-back");
+  const frontBtn = document.getElementById("pdp-front");
+  const backBtn = document.getElementById("pdp-back");
   const output = document.getElementById("pdp-output");
-function activeText() {
+  function activeText() {
     const obj = canvas.getActiveObject();
 
     if (!obj) return null;
@@ -143,7 +143,7 @@ function activeText() {
     if (obj.type !== "i-text") return null;
 
     return obj;
-}
+  }
   addTextBtn.addEventListener("click", function () {
     const text = new fabric.IText("Your Text", {
       left: DESIGN_AREA.left + 35,
@@ -219,7 +219,7 @@ function activeText() {
         printPng,
       },
       null,
-      2
+      2,
     );
   });
 

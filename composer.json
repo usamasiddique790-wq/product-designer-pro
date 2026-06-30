@@ -1,0 +1,42 @@
+{
+    "name": "usamasiddique/product-designer-pro",
+    "description": "Professional WooCommerce Product Designer",
+    "type": "wordpress-plugin",
+    "license": "GPL-2.0-or-later",
+
+    "require": {
+        "php": ">=7.4"
+    },
+
+    "require-dev": {
+        "dealerdirect/phpcodesniffer-composer-installer": "^1.2",
+        "php-stubs/woocommerce-stubs": "^10.9",
+        "php-stubs/wordpress-stubs": "^6.9",
+        "phpstan/phpstan": "^1.12",
+        "squizlabs/php_codesniffer": "^3.13",
+        "wp-coding-standards/wpcs": "^3.3"
+    },
+
+    "autoload": {
+        "psr-4": {
+            "PDP\\": "includes/"
+        }
+    },
+
+    "scripts": {
+        "lint": "phpcs -d memory_limit=1G --standard=phpcs.xml",
+        "lint:fix": "phpcbf -d memory_limit=1G --standard=phpcs.xml",
+        "analyse": "phpstan analyse --memory-limit=1G",
+        "test": [
+            "@lint",
+            "@analyse"
+        ]
+    },
+
+    "config": {
+        "sort-packages": true,
+        "allow-plugins": {
+            "dealerdirect/phpcodesniffer-composer-installer": true
+        }
+    }
+}

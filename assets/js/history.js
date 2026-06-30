@@ -24,9 +24,7 @@ const PDPHistory = {
   },
 
   getUserObjectsJson() {
-    const userObjects = this.canvas
-      .getObjects()
-      .filter((obj) => obj.excludeFromExport !== true);
+    const userObjects = this.canvas.getObjects().filter((obj) => obj.excludeFromExport !== true);
 
     return JSON.stringify(userObjects.map((obj) => obj.toObject()));
   },
@@ -50,9 +48,7 @@ const PDPHistory = {
   restoreState(json) {
     this.isRestoring = true;
 
-    const userObjects = this.canvas
-      .getObjects()
-      .filter((obj) => obj.excludeFromExport !== true);
+    const userObjects = this.canvas.getObjects().filter((obj) => obj.excludeFromExport !== true);
 
     userObjects.forEach((obj) => this.canvas.remove(obj));
 

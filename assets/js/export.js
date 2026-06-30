@@ -1,16 +1,21 @@
 const PDPExport = {
   exportDesign(canvas) {
+    if (typeof PDPViewManager !== "undefined") {
+      PDPViewManager.saveCurrentView();
+    }
+
+    const product = PDPProductManager.getCurrent();
     const area = PDPCanvas.designArea;
+    const currentView = PDPViewManager.currentView || "front";
+    const views = PDPViewManager.views;
 
-    const json = canvas.toJSON(["excludeFromExport"]);
-
-    const previewPng = canvas.toDataURL({
+    const currentPreviewPng = canvas.toDataURL({
       format: "png",
       quality: 1,
       multiplier: 1,
     });
 
-    const printPng = canvas.toDataURL({
+    const currentPrintPng = canvas.toDataURL({
       format: "png",
       left: area.left,
       top: area.top,
@@ -21,9 +26,21 @@ const PDPExport = {
     });
 
     return {
-      json,
-      previewPng,
-      printPng,
+      product: product.name,
+      currentView,
+
+      views: {
+        front: views.front || "[]",
+        back: views.back || "[]",
+      },
+
+      previews: {
+        front: views.frontPreviewPng || "",
+        back: views.backPreviewPng || "",
+      },
+
+      currentPreviewPng,
+      currentPrintPng,
     };
   },
 };
