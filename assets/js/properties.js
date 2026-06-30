@@ -3,6 +3,7 @@ const PDPProperties = {
   panel: null,
   textOnly: null,
   shapeOnly: null,
+  fields: {},
 
   init(canvas) {
     this.canvas = canvas;
@@ -11,6 +12,7 @@ const PDPProperties = {
     this.shapeOnly = document.querySelector(".pdp-shape-only");
 
     this.fields = {
+      layerName: document.getElementById("pdp-prop-layer-name"),
       left: document.getElementById("pdp-prop-left"),
       top: document.getElementById("pdp-prop-top"),
       width: document.getElementById("pdp-prop-width"),
@@ -53,6 +55,26 @@ const PDPProperties = {
     return obj.fill || "#2563eb";
   },
 
+  getLayerName(obj) {
+    if (typeof obj.pdpLayerName === "string") {
+      return obj.pdpLayerName;
+    }
+
+    if (obj.type === "i-text") {
+      return obj.text || "Text";
+    }
+
+    if (obj.type === "image") {
+      return obj.name || "Image";
+    }
+
+    if (obj.type === "group") {
+      return obj.name || "Group";
+    }
+
+    return obj.name || obj.type || "Layer";
+  },
+
   update() {
     const obj = this.active();
 
@@ -64,6 +86,10 @@ const PDPProperties = {
     this.show();
 
     const bounds = obj.getBoundingRect(true);
+
+    if (this.fields.layerName) {
+      this.fields.layerName.value = this.getLayerName(obj);
+    }
 
     this.fields.left.value = Math.round(obj.left || 0);
     this.fields.top.value = Math.round(obj.top || 0);
@@ -85,8 +111,8 @@ const PDPProperties = {
       if (this.fields.shapeColor) {
         this.fields.shapeColor.value = this.getObjectFill(obj);
       }
-    } else {
-      if (this.shapeOnly) this.shapeOnly.style.display = "none";
+    } else if (this.shapeOnly) {
+      this.shapeOnly.style.display = "none";
     }
 
     this.lockBtn.textContent = obj.lockMovementX ? "Unlock" : "Lock";
@@ -98,6 +124,22 @@ const PDPProperties = {
 
   hide() {
     this.panel.classList.remove("active");
+  },
+
+  saveHistory() {
+    if (typeof PDPHistory !== "undefined") {
+      PDPHistory.saveState();
+    }
+  },
+
+  refreshLinkedPanels(obj) {
+    if (typeof PDPSelection !== "undefined") {
+      PDPSelection.setActive(obj);
+    }
+
+    if (typeof PDPLayers !== "undefined") {
+      PDPLayers.render();
+    }
   },
 
   bindInputs() {
@@ -113,12 +155,22 @@ const PDPProperties = {
       });
 
       obj.setCoords();
-      this.canvas.renderAll();
+      this.canvas.requestRenderAll();
 
-      PDPSelection.setActive(obj);
-      PDPHistory.saveState();
+      this.refreshLinkedPanels(obj);
+      this.saveHistory();
     };
 
+    this.fields.layerName?.addEventListener("input", () => {
+      const obj = this.active();
+      if (!obj) return;
+
+      obj.set("pdpLayerName", this.fields.layerName.value);
+
+      this.canvas.requestRenderAll();
+      this.refreshLinkedPanels(obj);
+      this.saveHistory();
+    });
     [this.fields.left, this.fields.top, this.fields.angle, this.fields.opacity].forEach((field) => {
       field?.addEventListener("input", updateBasic);
     });
@@ -133,9 +185,9 @@ const PDPProperties = {
       if (bounds.width > 0) {
         obj.scaleX *= newWidth / bounds.width;
         obj.setCoords();
-        this.canvas.renderAll();
-        PDPSelection.setActive(obj);
-        PDPHistory.saveState();
+        this.canvas.requestRenderAll();
+        this.refreshLinkedPanels(obj);
+        this.saveHistory();
       }
     });
 
@@ -149,9 +201,9 @@ const PDPProperties = {
       if (bounds.height > 0) {
         obj.scaleY *= newHeight / bounds.height;
         obj.setCoords();
-        this.canvas.renderAll();
-        PDPSelection.setActive(obj);
-        PDPHistory.saveState();
+        this.canvas.requestRenderAll();
+        this.refreshLinkedPanels(obj);
+        this.saveHistory();
       }
     });
 
@@ -164,9 +216,9 @@ const PDPProperties = {
       });
 
       obj.setCoords();
-      this.canvas.renderAll();
-      PDPSelection.setActive(obj);
-      PDPHistory.saveState();
+      this.canvas.requestRenderAll();
+      this.refreshLinkedPanels(obj);
+      this.saveHistory();
     });
 
     this.fields.color?.addEventListener("input", () => {
@@ -177,9 +229,9 @@ const PDPProperties = {
         fill: this.fields.color.value,
       });
 
-      this.canvas.renderAll();
-      PDPSelection.setActive(obj);
-      PDPHistory.saveState();
+      this.canvas.requestRenderAll();
+      this.refreshLinkedPanels(obj);
+      this.saveHistory();
     });
 
     this.fields.shapeColor?.addEventListener("input", () => {
@@ -198,9 +250,9 @@ const PDPProperties = {
         obj.set("fill", color);
       }
 
-      this.canvas.renderAll();
-      PDPSelection.setActive(obj);
-      PDPHistory.saveState();
+      this.canvas.requestRenderAll();
+      this.refreshLinkedPanels(obj);
+      this.saveHistory();
     });
 
     this.duplicateBtn?.addEventListener("click", () => {
@@ -211,14 +263,14 @@ const PDPProperties = {
         clone.set({
           left: obj.left + 20,
           top: obj.top + 20,
+          pdpLayerName: obj.pdpLayerName ? `${obj.pdpLayerName} Copy` : undefined,
         });
 
         this.canvas.add(clone);
         this.canvas.setActiveObject(clone);
-        PDPSelection.setActive(clone);
-        this.canvas.renderAll();
-        PDPHistory.saveState();
-        PDPLayers.render();
+        this.refreshLinkedPanels(clone);
+        this.canvas.requestRenderAll();
+        this.saveHistory();
       });
     });
 
@@ -236,9 +288,10 @@ const PDPProperties = {
         lockRotation: locked,
       });
 
-      this.canvas.renderAll();
-      PDPSelection.setActive(obj);
-      PDPHistory.saveState();
+      this.canvas.requestRenderAll();
+      this.refreshLinkedPanels(obj);
+      this.saveHistory();
+      this.update();
     });
   },
 };

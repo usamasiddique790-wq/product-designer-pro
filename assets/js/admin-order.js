@@ -52,6 +52,10 @@ document.addEventListener("click", function (event) {
             Download JSON
           </button>
 
+          <button type="button" class="button button-secondary pdp-reedit-design">
+            Re-edit Design
+          </button>
+
           <p>This is the saved customer design.</p>
         </div>
       </div>
@@ -104,6 +108,11 @@ document.addEventListener("click", function (event) {
 
   modal.querySelector(".pdp-download-json").addEventListener("click", function () {
     downloadFile("product-design.json", prettyJson, "application/json");
+  });
+
+  modal.querySelector(".pdp-reedit-design").addEventListener("click", function () {
+    localStorage.setItem("pdp_reedit_design", JSON.stringify(design));
+    window.open("/designer/?pdp_reedit=1", "_blank");
   });
 
   modal.querySelector(".pdp-download-png").addEventListener("click", function () {

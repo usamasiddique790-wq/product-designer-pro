@@ -26,6 +26,8 @@ if ( function_exists( 'plugin_dir_url' ) ) {
 
 require_once PDP_PATH . 'includes/class-product-designer-pro.php';
 
+register_activation_hook( __FILE__, array( 'Product_Designer_Pro', 'activate' ) );
+register_deactivation_hook( __FILE__, array( 'Product_Designer_Pro', 'deactivate' ) );
 if ( function_exists( 'add_action' ) ) {
 	add_action(
 		'plugins_loaded',

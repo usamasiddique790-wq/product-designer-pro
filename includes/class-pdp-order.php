@@ -1,6 +1,6 @@
 <?php
 /**
- * Order functionality.
+ * Order integration.
  *
  * @package ProductDesignerPro
  */
@@ -9,148 +9,72 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-/**
- * PDP Order class.
- */
 class PDP_Order {
 
-	/**
-	 * Constructor.
-	 */
 	public function __construct() {
-
-		add_action(
-			'woocommerce_checkout_create_order_line_item',
-			array( $this, 'save_design_to_order_item' ),
-			10,
-			4
-		);
-
-		add_action(
-			'woocommerce_after_order_itemmeta',
-			array( $this, 'display_order_design_button' ),
-			10,
-			3
-		);
-
-		add_action(
-			'admin_enqueue_scripts',
-			array( $this, 'admin_assets' )
-		);
-	}
-
-	/**
-	 * Save design into order item.
-	 *
-	 * @param object $item Order item.
-	 * @param string $cart_item_key Cart item key.
-	 * @param array  $values Cart values.
-	 * @param object $order Order.
-	 *
-	 * @return void
-	 */
-	public function save_design_to_order_item(
-		$item,
-		$cart_item_key,
-		$values,
-		$order
-	) {
-
-		unset( $cart_item_key, $order );
-
-		if ( empty( $values['pdp_design_json'] ) ) {
-			return;
+		if ( function_exists( 'add_action' ) ) {
+			add_action( 'woocommerce_after_order_itemmeta', array( $this, 'show_design_previews_admin' ), 10, 3 );
 		}
-
-		$item->add_meta_data(
-			'_pdp_design_json',
-			(string) $values['pdp_design_json'],
-			true
-		);
 	}
 
-	/**
-	 * Show View Design button.
-	 *
-	 * @param int    $item_id Item ID.
-	 * @param object $item Order item.
-	 * @param object $product Product.
-	 *
-	 * @return void
-	 */
-	public function display_order_design_button(
-		$item_id,
-		$item,
-		$product
-	) {
-
+	public function show_design_previews_admin( $item_id, $item, $product ) {
 		unset( $item_id, $product );
 
-		$design = $item->get_meta(
-			'_pdp_design_json',
-			true
-		);
-
-		if ( empty( $design ) ) {
+		if ( function_exists( 'is_admin' ) && ! call_user_func( 'is_admin' ) ) {
 			return;
 		}
 
-		?>
+		if ( ! is_object( $item ) || ! method_exists( $item, 'get_meta' ) ) {
+			return;
+		}
 
-		<p class="pdp-order-design-actions">
+		$design_id = absint( $item->get_meta( '_pdp_design_id' ) );
 
-			<strong>
+		if ( ! $design_id ) {
+			return;
+		}
 
-				<?php
-				esc_html_e(
-					'Product Design',
-					'product-designer-pro'
-				);
-				?>
+		global $wpdb;
 
-			</strong>
-
-			<br>
-
-			<button
-				type="button"
-				class="button pdp-view-design"
-				data-design="<?php echo esc_attr( $design ); ?>">
-
-				<?php
-				esc_html_e(
-					'View Design',
-					'product-designer-pro'
-				);
-				?>
-
-			</button>
-
-		</p>
-
-		<?php
-	}
-
-	/**
-	 * Load admin JS.
-	 *
-	 * @return void
-	 */
-	public function admin_assets() {
-
-		wp_enqueue_style(
-			'pdp-admin',
-			PDP_URL . 'assets/css/admin.css',
-			array(),
-			PDP_VERSION
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+		$design = $wpdb->get_row(
+			$wpdb->prepare(
+				'SELECT preview_front, preview_back FROM wp_pdp_designs WHERE id = %d',
+				$design_id
+			)
 		);
 
-		wp_enqueue_script(
-			'pdp-admin-order',
-			PDP_URL . 'assets/js/admin-order.js',
-			array(),
-			PDP_VERSION,
-			true
-		);
+		if ( ! $design ) {
+			return;
+		}
+
+		$preview_front = function_exists( 'esc_attr' ) ? call_user_func( 'esc_attr', $design->preview_front ) : $design->preview_front;
+		$preview_back  = function_exists( 'esc_attr' ) ? call_user_func( 'esc_attr', $design->preview_back ) : $design->preview_back;
+		$design_label  = function_exists( 'esc_html' ) ? call_user_func( 'esc_html', $design_id ) : $design_id;
+
+		echo '<div class="pdp-admin-order-preview" style="margin-top:10px;">';
+		echo '<strong>Product Design Preview</strong>';
+		echo '<div style="display:flex; gap:12px; margin-top:8px; flex-wrap:wrap;">';
+
+		if ( ! empty( $preview_front ) ) {
+			echo '<div>';
+			echo '<p style="margin:0 0 4px;"><strong>Front</strong></p>';
+			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+			echo '<img src="' . $preview_front . '" style="max-width:160px;height:auto;border:1px solid #ddd;background:#fff;padding:4px;">';
+			echo '</div>';
+		}
+
+		if ( ! empty( $preview_back ) ) {
+			echo '<div>';
+			echo '<p style="margin:0 0 4px;"><strong>Back</strong></p>';
+			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+			echo '<img src="' . $preview_back . '" style="max-width:160px;height:auto;border:1px solid #ddd;background:#fff;padding:4px;">';
+			echo '</div>';
+		}
+
+		echo '</div>';
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+		echo '<p style="margin-top:8px;">Design ID: ' . $design_label . '</p>';
+		echo '</div>';
 	}
 }

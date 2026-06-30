@@ -12,7 +12,6 @@ parameters:
 
     ignoreErrors:
         - '#Function add_action not found#'
-        - '#Function add_filter not found#'
         - '#Function woocommerce_wp_checkbox not found#'
         - '#Function esc_html__ not found#'
         - '#Function esc_html_e not found#'
@@ -23,6 +22,6 @@ parameters:
         - '#Function wp_unslash not found#'
         - '#Function wp_rand not found#'
         - '#Function wc_get_cart_url not found#'
-        - '#Function esc_attr not found#'
-        - '#Function wp_enqueue_script not found#'
-        - '#Function wp_enqueue_style not found#'
+        - '#Function dbDelta not found#'
+        - '#Function register_activation_hook not found#'
+        - '#Function register_deactivation_hook not found#'
